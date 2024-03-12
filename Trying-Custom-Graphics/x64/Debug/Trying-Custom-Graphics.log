@@ -1,0 +1,4 @@
+﻿  EntryPoint.cpp
+C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\EntryPoint.cpp(62,18): warning C4244: '=': conversion from 'clock_t' to 'float', possible loss of data
+C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\EntryPoint.cpp(63,36): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  Trying-Custom-Graphics.vcxproj -> C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\x64\Debug\Trying-Custom-Graphics.exe
