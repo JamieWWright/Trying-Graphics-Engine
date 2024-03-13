@@ -1,10 +1,9 @@
-#define GLFW_INCLUDE_NONE
-#include "glfw3.h"
-#include "glad.h"
+#include "Graphics.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
+#include <vector>
+#include "ShaderProgram.h"
 
 float deltaTime;
 float prevTime = 1;
@@ -39,13 +38,42 @@ int main(void)
 		return -1;
 	}
 	
+	ShaderProgram basicShader("Shader.vert", "Shader.frag");
+	basicShader.UseShader();
+
+	std::vector<float> triangleFloats
+	{
+		-1, -1, 0,    1, 0, 0,
+		 0,  1, 0,    0, 1, 0,
+		 1,  0, 0,    0, 0, 1,
+	};
+
+	GLuint vertexBufferID = 0;
+	glGenBuffers(1, &vertexBufferID);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * triangleFloats.size(), triangleFloats.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	
+
 	//Game loop
 	while (!glfwWindowShouldClose(window))
 	{
 		//Clear screen, then do rendering here
 		glClear(GL_COLOR_BUFFER_BIT);
 
+
 		Update();
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+
+
+		glDrawArrays(GL_TRIANGLES, 0, triangleFloats.size() / 3);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		//Swap buffer - transfering to next frame
 		glfwSwapBuffers(window);
 
@@ -60,14 +88,9 @@ int main(void)
 
 void Update()
 {
-	deltaTime = clock() - prevTime;
-	prevTime = clock();
+	//deltaTime = clock() - prevTime;
+	//prevTime = clock();
 	glClearColor(cos(clock() * 0.001) + 1, 0, 1, 1);
+	
 }
 
-std::string LoadFileAsString(std::string filename)
-{
-	std::ifstream curFile;
-	curFile.open(".../Assets/" + filename, );
-	curFile
-}

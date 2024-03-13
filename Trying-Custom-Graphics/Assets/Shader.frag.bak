@@ -1,0 +1,9 @@
+#version 450
+
+out vec4 PixelColor;
+
+in ver3 Color = (0,0,0);
+void main()
+{
+	PixelColor = vec4(1 ,1, 1, 1);
+}
