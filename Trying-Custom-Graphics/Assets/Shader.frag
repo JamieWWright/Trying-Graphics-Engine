@@ -2,8 +2,8 @@
 
 out vec4 PixelColor;
 
-in ver3 Color;
+in vec3 color;
 void main()
 {
-	PixelColor = vec4(Color, 1);
+	PixelColor = vec4(color, 1);
 }

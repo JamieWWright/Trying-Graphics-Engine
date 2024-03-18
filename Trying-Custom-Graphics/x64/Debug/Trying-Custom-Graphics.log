@@ -1,8 +1,4 @@
 ﻿  EntryPoint.cpp
-C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\EntryPoint.cpp(75,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\EntryPoint.cpp(93,36): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-  ShaderProgram.cpp
-  Utilities.cpp
-  Generating Code...
+C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\EntryPoint.cpp(79,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Trying-Custom-Graphics.vcxproj -> C:\Users\s211033\Documents\Trying-Graphics-Engine\Trying-Custom-Graphics\x64\Debug\Trying-Custom-Graphics.exe

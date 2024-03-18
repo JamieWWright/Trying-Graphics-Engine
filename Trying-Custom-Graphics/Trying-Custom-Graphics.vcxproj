@@ -135,6 +135,8 @@
   <ItemGroup>
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
@@ -142,8 +144,11 @@
     <ClInclude Include="glad.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="khrplatform.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

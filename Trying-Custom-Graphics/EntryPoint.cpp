@@ -5,6 +5,8 @@
 #include <vector>
 #include "ShaderProgram.h"
 
+#include "ext/matrix_clip_space.hpp"
+
 float deltaTime;
 float prevTime = 1;
 
@@ -43,9 +45,13 @@ int main(void)
 
 	std::vector<float> triangleFloats
 	{
-		-1, -1, 0,    1, 0, 0,
-		 0,  1, 0,    0, 1, 0,
-		 1,  0, 0,    0, 0, 1,
+		 -0.5f,-0.5f, 0,    1, 1, 1,
+		 -0.5f, 0.5f, 0,	1, 1, 1,
+		 0,     0.5f, 0,	1, 1, 1,
+		 
+		 0,0.5f, 0,    0, 1, 1,
+		 0,-0.5f, 0,	0, 1, 1,
+		 -0.5f,-0.5f, 0,    0, 1, 1,
 	};
 
 	GLuint vertexBufferID = 0;
@@ -90,7 +96,6 @@ void Update()
 {
 	//deltaTime = clock() - prevTime;
 	//prevTime = clock();
-	glClearColor(cos(clock() * 0.001) + 1, 0, 1, 1);
-	
+	//glClearColor(cos(clock() * 0.001) + 1, 0, 1, 1);
 }
 
