@@ -6,9 +6,12 @@
 
 struct Object
 {
-	glm::vec2 position;
+	glm::mat4 modelMatrix; 
 	Mesh* loadedMeshID;
 	ShaderProgram* shader;
 
 	void Draw();
+	void Move();
+	void Rotate();
+
 };

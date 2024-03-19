@@ -5,9 +5,10 @@
 
 struct Mesh
 {
-	GLuint bufferID;
+	GLuint bufferID = 0;
+	std::vector<Vertex> verticies;
 
-	Mesh(std::vector<float> design);
+	Mesh(std::vector<Vertex> design);
 
-	void MakeCurrentBuffer();
+	void Draw();
 };

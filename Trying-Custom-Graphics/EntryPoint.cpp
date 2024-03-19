@@ -4,7 +4,8 @@
 #include <sstream>
 #include <vector>
 #include "ShaderProgram.h"
-
+#include "Object.h"
+#include "ext/matrix_transform.hpp"
 #include "ext/matrix_clip_space.hpp"
 
 float deltaTime;
@@ -16,7 +17,7 @@ void Update();
 int main(void)
 {
 	GLFWwindow* window;
-
+	
 	//Initialses glfw or something
 	if (!glfwInit())
 	{
@@ -43,44 +44,77 @@ int main(void)
 	ShaderProgram basicShader("Shader.vert", "Shader.frag");
 	basicShader.UseShader();
 
-	std::vector<float> triangleFloats
+	std::vector<Vertex> cubeVerticies
 	{
-		 -0.5f,-0.5f, 0,    1, 1, 1,
-		 -0.5f, 0.5f, 0,	1, 1, 1,
-		 0,     0.5f, 0,	1, 1, 1,
-		 
-		 0,0.5f, 0,    0, 1, 1,
-		 0,-0.5f, 0,	0, 1, 1,
-		 -0.5f,-0.5f, 0,    0, 1, 1,
-	};
+		Vertex({0, 0, 0}, {0, 0, 1}, {0, 0}),
+		Vertex({1, 0, 0}, {0, 0, 1}, {0, 0}),
+		Vertex({0, 1, 0}, {0, 0, 1}, {0, 0}),
+		Vertex({0, 1, 0}, {0, 0, 1}, {0, 0}),
+		Vertex({1, 0, 0}, {0, 0, 1}, {0, 0}),
+		Vertex({1, 1, 0}, {0, 0, 1}, {0, 0}),
 
-	GLuint vertexBufferID = 0;
-	glGenBuffers(1, &vertexBufferID);
+		Vertex({0, 0, 1}, {1, 1, 0}, {0, 0}),
+		Vertex({0, 1, 1}, {1, 1, 0}, {0, 0}),
+		Vertex({1, 0, 1}, {1, 1, 0}, {0, 0}),
+		Vertex({0, 1, 1}, {1, 1, 0}, {0, 0}),
+		Vertex({1, 0, 1}, {1, 1, 0}, {0, 0}),
+		Vertex({1, 1, 1}, {1, 1, 0}, {0, 0}),
+		
+		Vertex({0, 0, 0}, {0, 1, 0}, {0, 0}),
+		Vertex({0, 0, 1}, {0, 1, 0}, {0, 0}),
+		Vertex({1, 0, 0}, {0, 1, 0}, {0, 0}),
+		Vertex({0, 0, 1}, {0, 1, 0}, {0, 0}),
+		Vertex({1, 0, 0}, {0, 1, 0}, {0, 0}),
+		Vertex({1, 0, 1}, {0, 1, 0}, {0, 0}),
+		
+		Vertex({0, 1, 0}, {1, 0, 1}, {0, 0}),
+		Vertex({0, 1, 1}, {1, 0, 1}, {0, 0}),
+		Vertex({1, 1, 0}, {1, 0, 1}, {0, 0}),
+		Vertex({0, 1, 1}, {1, 0, 1}, {0, 0}),
+		Vertex({1, 1, 0}, {1, 0, 1}, {0, 0}),
+		Vertex({1, 1, 1}, {1, 0, 1}, {0, 0}),
+		
+		Vertex({0, 0, 0}, {1, 0, 0}, {0, 0}),
+		Vertex({0, 0, 1}, {1, 0, 0}, {0, 0}),
+		Vertex({0, 1, 0}, {1, 0, 0}, {0, 0}),
+		Vertex({0, 0, 1}, {1, 0, 0}, {0, 0}),
+		Vertex({0, 1, 0}, {1, 0, 0}, {0, 0}),
+		Vertex({0, 1, 1}, {1, 0, 0}, {0, 0}),
+		
+		Vertex({1, 0, 0}, {0, 1, 1}, {0, 0}),
+		Vertex({1, 0, 1}, {0, 1, 1}, {0, 0}),
+		Vertex({1, 1, 0}, {0, 1, 1}, {0, 0}),
+		Vertex({1, 0, 1}, {0, 1, 1}, {0, 0}),
+		Vertex({1, 1, 0}, {0, 1, 1}, {0, 0}),
+		Vertex({1, 1, 1}, {0, 1, 1}, {0, 0}),
+	}; 
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * triangleFloats.size(), triangleFloats.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	Mesh cubeMesh(cubeVerticies);
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	
+	glEnable(GL_DEPTH_TEST);
 
 	//Game loop
 	while (!glfwWindowShouldClose(window))
 	{
 		//Clear screen, then do rendering here
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glm::mat4 modelMatrix = glm::rotate(glm::mat4(1.0f), (float)glfwGetTime(), { 0.0f, 1.0f, 0.0f });
+
+		float aspect = 1280 / (float)720;
+
+		glm::mat4 projectionMatrix = glm::perspective(3.14159f / 4.0f, aspect, 0.1f, 50.0f);
+
+		glm::mat4 viewMatrix = glm::lookAt(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+		glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+
+		basicShader.SetUniform((std::string)"mvpMatrix", mvpMatrix);
 
 		Update();
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
-
-
-		glDrawArrays(GL_TRIANGLES, 0, triangleFloats.size() / 3);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		cubeMesh.Draw();
 		//Swap buffer - transfering to next frame
+
 		glfwSwapBuffers(window);
 
 		//Tell glfw to check if anything is going on with input, etc.
